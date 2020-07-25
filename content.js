@@ -9,14 +9,13 @@ $(function () {
 
     function createVersionText(text, latestVersion) {
         text = text.replace('{version}', bucketVersion)
-            .replace('{bucket-name}', bucketName)
+            .replace('{bucket-name}', bucketName);
         if (latestVersion) {
             return bucketVersion === latestVersion.trim() ?
                 text.replace('updated version: {new-version}', '<b>Bucket IN LATEST VERSION</b>') :
-                text.replace('{new-version}', latestVersion);
-        } else {
-            return text.replace(' updated version: {new-version}', ' Can\'t get new version :(');
+                text.replace('{new-version}', `<b id="error">${latestVersion}</b>`);
         }
+        return text.replace(' updated version: {new-version}', '<b> Can\'t get new version :( </b>');
     }
 
     function getLatestVersion() {
@@ -24,15 +23,14 @@ $(function () {
             {contentScriptQuery: "bucket"}, function (response) {
                 const snack = $('#snackbar');
                 if (response.content) {
-                    response = JSON.parse(response);
-                    snack.text(createVersionText(snack.text(), response.content[bucketName][0]));
+                    snack.html(createVersionText(snack.text(), response.content[bucketName][0]));
                 } else {
-                    snack.text(createVersionText(snack.text(), false));
+                    snack.html(createVersionText(snack.text(), false));
                 }
                 snack.addClass('show');
                 setTimeout(function () {
                     snack.removeClass('show');
-                }, 5000);
+                }, 15000);
             })
     }
 });
