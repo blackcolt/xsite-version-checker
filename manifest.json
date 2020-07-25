@@ -6,7 +6,8 @@
   },
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "https://ni-xbox.naturalint.com/api/bucket-bos/ui-data/pages/"
   ],
   "background": {
     "scripts": [
